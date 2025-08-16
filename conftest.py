@@ -11,7 +11,7 @@ from selenium.webdriver.chrome.service import Service
 
 @pytest.fixture
 def installer_app():
-    exe_path = r"C:\Users\VKalyniuk\Downloads\installer_9.1.57803.1174_internal"
+    exe_path = r"C:\Users\VKalyniuk\Downloads\installer_9.1.60749.1182_signed_injected_internal"
     application = start_installer(exe_path)
     yield application
     time.sleep(5)
@@ -29,7 +29,8 @@ def chrome_browser():
     chrome_options.add_argument(f"--user-data-dir={debug_profile}")
     chrome_options.add_argument("--no-first-run")
     chrome_options.add_argument("--disable-sync")
-    chrome_options.add_argument("--incognito")
+    # chrome_options.add_argument("--incognito")
+    # chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
 
     driver = webdriver.Chrome(options=chrome_options)
     yield driver
@@ -38,7 +39,7 @@ def chrome_browser():
 @pytest.fixture
 def firefox_browser():
     firefox_options = webdriver.FirefoxOptions()
-    firefox_options.add_argument("--private")
+    # firefox_options.add_argument("--private")
 
     driver = webdriver.Firefox(options=firefox_options)
     yield driver

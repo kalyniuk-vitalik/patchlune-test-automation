@@ -1,5 +1,7 @@
 import time
+from pywinauto import Application
 from conftest import installer_app
+from resources.desktop_link_checker import verify_desktop_to_web_flow
 from utils.browser_checker import  ProcessChecker
 from conftest import chrome_browser, firefox_browser
 from page_objects.installer.installer_window import InstallerWindow
@@ -20,12 +22,21 @@ def test_click_licensing_agreement(installer_app):
 
     assert installer_window.click_licensing_agreement(), "Failed to click Licensing Agreement link"
 
-def test_start_browser(firefox_browser):
-    # chrome = chrome_browser
-    firefox = firefox_browser
+def test_installer_links(installer_app):
+    installer_window = InstallerWindow(installer_app)
     process_check = ProcessChecker()
-
-    assert process_check.check_is_firefox_running() is True, "firefox off"
-    # assert process_check.check_is_chrome_running() is True, "chrome off"
-    # chrome_browser.get("chrome://version")
+    installer_window.click_privacy_policy()
+    installer_window.click_licensing_agreement()
     time.sleep(5)
+
+    privacy_policy_link_is_valid = verify_desktop_to_web_flow("privacy", "privacy", "English")
+    if not privacy_policy_link_is_valid:
+        assert False, "Privacy policy link redirect validation failed"
+
+    license_agreement_is_valid = verify_desktop_to_web_flow("eula", "eula", "English")
+    if not license_agreement_is_valid:
+        assert False, "License agreement link redirect validation failed"
+
+
+
+
