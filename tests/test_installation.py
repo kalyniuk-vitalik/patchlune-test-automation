@@ -6,7 +6,7 @@ from utils.browser_checker import  ProcessChecker
 from conftest import chrome_browser, firefox_browser
 from page_objects.installer.installer_window import InstallerWindow
 from page_objects.installer.locators import InstallerLocators
-
+from trying_some_code import get_default_browser
 def test_visible_installer_window(installer_app):
     installer_window = InstallerWindow(installer_app)
 
@@ -19,16 +19,15 @@ def test_visible_installer_window(installer_app):
 
 def test_click_licensing_agreement(installer_app):
     installer_window = InstallerWindow(installer_app)
-
     assert installer_window.click_licensing_agreement(), "Failed to click Licensing Agreement link"
 
 def test_installer_links(installer_app):
     installer_window = InstallerWindow(installer_app)
-    process_check = ProcessChecker()
+    browsers_process = ProcessChecker()
     installer_window.click_privacy_policy()
     installer_window.click_licensing_agreement()
     time.sleep(5)
-
+    assert browsers_process.check_is_firefox_running(), "Fox не РОБЕ"
     privacy_policy_link_is_valid = verify_desktop_to_web_flow("privacy", "privacy", "English")
     if not privacy_policy_link_is_valid:
         assert False, "Privacy policy link redirect validation failed"
