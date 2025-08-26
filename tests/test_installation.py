@@ -1,7 +1,9 @@
+import pytest
 
 from page_objects.installer.locators import InstallerLocators
 from utils.process_utils import wait_for_process_start
 from utils.log_analyzer import verify_desktop_to_web_flow
+from test_data.expected_log_patterns import LICENSE_AGREEMENT_EXPECTATIONS, PRIVACY_POLICY_EXPECTATIONS
 
 
 def test_visible_installer_window(installer_window):
@@ -12,16 +14,25 @@ def test_visible_installer_window(installer_window):
     assert installer_window.get_licensing_agreement_link().exists(), "Licensing agreement link is not visible"
     assert installer_window.get_installer_language_dropdown().exists(), "Language dropdown is not visible"
 
-def test_click_license_agreement(installer_window, browser_manager):
-    redirect = "eula"
-    custom_value = "eula"
-    lang_of_url = "English"
+@pytest.mark.parametrize("lang_code", ["en"])
+def test_click_license_agreement(installer_window, browser_manager, lang_code):
+    data = LICENSE_AGREEMENT_EXPECTATIONS[lang_code]
     browser = browser_manager.get_default_browser()
     assert installer_window.click_license_agreement(), "Failed to click Licensing Agreement link"
     assert wait_for_process_start(browser), f"Browser process '{browser}' did not start"
     browser_manager.kill_opened_browser(browser)
-    assert verify_desktop_to_web_flow(redirect, custom_value, lang_of_url), \
-         f"Expected redirect flow not found in logs for redirect={redirect}, custom_value={custom_value}, lang={lang_of_url}"
+    assert verify_desktop_to_web_flow(redirect = data["redirect"], custom_value = data["custom_value"], lang_of_url = data["lang_of_url"]), \
+         f"[{lang_code}] Expected redirect not found"
+
+@pytest.mark.parametrize("lang_code", ["en"])
+def test_click_privacy_policy(installer_window, browser_manager, lang_code):
+    data = PRIVACY_POLICY_EXPECTATIONS[lang_code]
+    browser = browser_manager.get_default_browser()
+    assert installer_window.click_privacy_policy(), "Failed to click Privacy Policy link"
+    assert wait_for_process_start(browser), f"Browser process '{browser}' did not start"
+    browser_manager.kill_opened_browser(browser)
+    assert verify_desktop_to_web_flow(redirect = data["redirect"], custom_value = data["custom_value"], lang_of_url = data["lang_of_url"]), \
+         f"[{lang_code}] Expected redirect not found"
 
 
 
