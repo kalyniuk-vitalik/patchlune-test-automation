@@ -23,7 +23,7 @@ class InstallerWindow(BasePage):
     def get_installer_language_dropdown(self):
         return self.get_language_dropdown()
 
-    def click_licensing_agreement(self):
+    def click_license_agreement(self):
         return self.click_button(**InstallerLocators.LICENSING_AGREEMENT_LINK)
 
     def click_privacy_policy(self):

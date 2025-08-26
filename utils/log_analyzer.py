@@ -21,3 +21,5 @@ def verify_desktop_to_web_flow(redirect, custom_value, lang_of_url):
             return False
     except (OSError, IOError) as e:
         raise RuntimeError(f"Cannot read log file")
+
+

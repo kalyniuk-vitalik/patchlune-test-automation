@@ -2,14 +2,12 @@ import psutil
 import subprocess
 from winreg import OpenKey, HKEY_CURRENT_USER, QueryValueEx
 
-from trying_some_code import kill_opened_browser
 
 
-class ProcessChecker:
+class BrowserProcessManager:
     def __init__(self):
         self.attrs = ["name"]
         self.schemes =("http", "https")
-        self.browser = None
 
     def __iter__(self):
         return psutil.process_iter(self.attrs)
@@ -48,28 +46,16 @@ class ProcessChecker:
                 continue
         return False
 
-    def kill_opened_browser(self):
+    @staticmethod
+    def kill_opened_browser(browser):
         try:
-            result = subprocess.run(["taskkill", "/F", "/IM", self, "/T"], capture_output=True, text=True)
+            result = subprocess.run(["taskkill", "/F", "/IM", browser, "/T"], capture_output=True, text=True)
             if result.returncode == 0:
                 return True
             else:
-                return False, f"taskkill for {self} failed"
+                return False, f"taskkill for {browser} failed"
         except Exception as e:
             return False, f"exception: {e}"
-
-
-object_k = ProcessChecker()
-# run = object_k.check_is_browser_running()
-
-defaul = object_k.get_default_browser()
-
-if object_k.check_is_browser_running(defaul):
-    kill_opened_browser(defaul)
-else:
-    print("Yes")
-
-e
 
     # def check_is_chrome_running(self):
     #     for proc in psutil.process_iter(self.attrs):
