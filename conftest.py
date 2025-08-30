@@ -8,11 +8,13 @@ from utils.installer_start import start_installer
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-
+@pytest.fixture(scope="session")
+def exe_path():
+    return r"C:\Users\VKalyniuk\Downloads\installer_9.1.61293.1184_signed_injected_internal.exe"
 
 @pytest.fixture
-def installer_app():
-    exe_path = r"C:\Users\VKalyniuk\Downloads\installer_9.1.60906.1183_internal"
+def installer_app(exe_path):
+    # exe_path = r"C:\Users\VKalyniuk\Downloads\installer_9.1.60906.1183_internal"
     application = start_installer(exe_path)
     yield application
     time.sleep(5)

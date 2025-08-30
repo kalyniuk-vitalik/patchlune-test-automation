@@ -1,10 +1,14 @@
 import pytest
-
 from page_objects.installer.locators import InstallerLocators
+from conftest import exe_path
 from utils.process_utils import wait_for_process_start
 from utils.log_analyzer import verify_desktop_to_web_flow
+from utils.signature_verifier import get_signature
+from test_data.signatures import ADAWARE_SIGNATURE
 from test_data.expected_log_patterns import LICENSE_AGREEMENT_EXPECTATIONS, PRIVACY_POLICY_EXPECTATIONS
 
+def test_exe_signature(exe_path):
+    assert get_signature(exe_path) == ADAWARE_SIGNATURE, "Signature verification failed!"
 
 def test_visible_installer_window(installer_window):
     assert installer_window.is_installer_window_visible(), "Installer window is not visible"
@@ -34,6 +38,5 @@ def test_click_privacy_policy(installer_window, browser_manager, lang_code):
     assert verify_desktop_to_web_flow(redirect = data["redirect"], custom_value = data["custom_value"], lang_of_url = data["lang_of_url"]), \
          f"[{lang_code}] Expected redirect not found"
 
-
-
-
+# def test_start_instalation(installer_window):
+#     installer_window.click_install()

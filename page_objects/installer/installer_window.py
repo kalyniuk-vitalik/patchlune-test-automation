@@ -29,4 +29,7 @@ class InstallerWindow(BasePage):
     def click_privacy_policy(self):
         return self.click_button(**InstallerLocators.PRIVACY_POLICY_LINK)
 
+    def click_install(self):
+        return self.click_button(**InstallerLocators.INSTALLER_BUTTON)
+
 
