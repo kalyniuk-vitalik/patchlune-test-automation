@@ -35,3 +35,6 @@ class BasePage:
         except Exception as e:
             logging.error(f"Failed to click button: {e}")
             raise ValueError(f"Button not found or not clickable: {e}") from e
+
+    def get_label(self, **kwargs):
+        return self.window.child_window(**kwargs)

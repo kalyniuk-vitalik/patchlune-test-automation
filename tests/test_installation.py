@@ -6,6 +6,7 @@ from utils.log_analyzer import verify_desktop_to_web_flow
 from utils.signature_verifier import get_signature
 from test_data.signatures import ADAWARE_SIGNATURE
 from test_data.expected_log_patterns import LICENSE_AGREEMENT_EXPECTATIONS, PRIVACY_POLICY_EXPECTATIONS
+import time
 
 def test_exe_signature(exe_path):
     assert get_signature(exe_path) == ADAWARE_SIGNATURE, "Signature verification failed!"
@@ -38,5 +39,10 @@ def test_click_privacy_policy(installer_window, browser_manager, lang_code):
     assert verify_desktop_to_web_flow(redirect = data["redirect"], custom_value = data["custom_value"], lang_of_url = data["lang_of_url"]), \
          f"[{lang_code}] Expected redirect not found"
 
-# def test_start_instalation(installer_window):
-#     installer_window.click_install()
+def test_start_installation (installer_window):
+    installer_window.click_install_button()
+    installing_driver_updater = installer_window.get_label(**InstallerLocators.INSTALLING_LABEL)
+    do_not_turn_your_device_off = installer_window.get_label(**InstallerLocators.DO_NOT_TURN_OFF_LABEL)
+    assert installing_driver_updater.window_text() == "Installing Driver Updater", f"{installing_driver_updater.window_text()}"
+    assert do_not_turn_your_device_off.window_text() == "Please do not turn your device off", f"{do_not_turn_your_device_off.window_text()}"
+
