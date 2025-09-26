@@ -1,20 +1,17 @@
 import time
-from email.utils import decode_rfc2231
-
 import pytest
 from utils.browser_checker import BrowserProcessManager
 from page_objects.installer.installer_window import InstallerWindow
 from utils.installer_start import start_installer
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 
 @pytest.fixture(scope="session")
 def exe_path():
-    return r"C:\Users\VKalyniuk\Downloads\installer_9.1.61293.1184_signed_injected_internal.exe"
+    """Provides the path to the installer executable."""
+    return r"C:\Users\VKalyniuk\Downloads\installer_10.1.63763.5338_signed_injected_internal.exe"
 
 @pytest.fixture
 def installer_app(exe_path):
-    # exe_path = r"C:\Users\VKalyniuk\Downloads\installer_9.1.60906.1183_internal"
+    """Starts the installer application and ensures cleanup after tests."""
     application = start_installer(exe_path)
     yield application
     time.sleep(5)
@@ -26,39 +23,10 @@ def installer_app(exe_path):
 
 @pytest.fixture
 def installer_window(installer_app):
+    """Creates an InstallerWindow object for the running installer."""
     return InstallerWindow(installer_app)
-
-# @pytest.fixture
-# def default_browser():
-#     browser = BrowserProcessManager()
-#     return browser.get_default_browser()
 
 @pytest.fixture
 def browser_manager():
+    """Provides a BrowserProcessManager instance for browser operations."""
     return BrowserProcessManager()
-
-
-
-@pytest.fixture
-def chrome_browser():
-    chrome_options = Options()
-    debug_profile = "debug profile path"
-    chrome_options.add_argument("--remote-debugging-port=9222")
-    chrome_options.add_argument(f"--user-data-dir={debug_profile}")
-    chrome_options.add_argument("--no-first-run")
-    chrome_options.add_argument("--disable-sync")
-    # chrome_options.add_argument("--incognito")
-    # chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
-
-    driver = webdriver.Chrome(options=chrome_options)
-    yield driver
-    driver.quit()
-
-@pytest.fixture
-def firefox_browser():
-    firefox_options = webdriver.FirefoxOptions()
-    # firefox_options.add_argument("--private")
-
-    driver = webdriver.Firefox(options=firefox_options)
-    yield driver
-    driver.quit()

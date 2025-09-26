@@ -3,6 +3,10 @@ import subprocess
 from pathlib import Path
 
 def get_signature(path):
+    """Retrieves the Authenticode signature details of a file using PowerShell.
+
+    Useful for verifying the digital signature status and signer information of executables.
+    """
     path = str(Path(path).resolve())
     ps = [
         "powershell", "-NoProfile", "-NonInteractive", "-Command",
@@ -23,4 +27,3 @@ def get_signature(path):
         "status_message": description,
         "signer_subject": signer,
     }
-

@@ -1,6 +1,10 @@
 from pathlib import Path
 
 def verify_desktop_to_web_flow(redirect, custom_value, lang_of_url):
+    """Checks if the desktop-to-web redirect flow is present in the latest installer log.
+
+    Useful for verifying that the correct redirect and custom parameters are logged during installation.
+    """
     path = Path(r"C:\ProgramData\Avanquest\Driver Updater\logs")
     if not path.exists():
         raise FileNotFoundError(f"Log directory not found: {path}")
@@ -21,5 +25,3 @@ def verify_desktop_to_web_flow(redirect, custom_value, lang_of_url):
             return False
     except (OSError, IOError) as e:
         raise RuntimeError(f"Cannot read log file")
-
-

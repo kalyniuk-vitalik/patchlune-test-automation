@@ -2,17 +2,23 @@ import psutil
 import subprocess
 from winreg import OpenKey, HKEY_CURRENT_USER, QueryValueEx
 
-
-
 class BrowserProcessManager:
+    """Handles browser process management and default browser detection on Windows."""
+
     def __init__(self):
+        """Initializes supported process attributes and URL schemes."""
         self.attrs = ["name"]
         self.schemes =("http", "https")
 
     def __iter__(self):
+        """Returns an iterator over running processes for browser checks."""
         return psutil.process_iter(self.attrs)
 
     def get_default_browser(self):
+        """Finds the default browser executable name from the Windows registry.
+
+        Useful for determining which browser is set as default for web links.
+        """
         browsers = {
             "chromehtml": "chrome.exe",
             "msedgehtm": "msedge.exe",
@@ -38,6 +44,10 @@ class BrowserProcessManager:
         return "browser not found"
 
     def check_is_browser_running(self, browser):
+        """Checks if a browser process with the given name is currently running.
+
+        Useful for verifying if a specific browser is active.
+        """
         for proc in self:
             try:
                 if proc.info.get("name") == browser:
@@ -48,6 +58,10 @@ class BrowserProcessManager:
 
     @staticmethod
     def kill_opened_browser(browser):
+        """Attempts to terminate all running processes of the specified browser.
+
+        Useful for ensuring no browser instances are open before certain operations.
+        """
         try:
             result = subprocess.run(["taskkill", "/F", "/IM", browser, "/T"], capture_output=True, text=True)
             if result.returncode == 0:
@@ -56,22 +70,3 @@ class BrowserProcessManager:
                 return False, f"taskkill for {browser} failed"
         except Exception as e:
             return False, f"exception: {e}"
-
-    # def check_is_chrome_running(self):
-    #     for proc in psutil.process_iter(self.attrs):
-    #         if proc.name() == "chrome.exe":
-    #             return True
-    #     return False
-    #
-    # def check_is_firefox_running(self):
-    #     for proc in psutil.process_iter(self.attrs):
-    #         if proc.name() == "firefox.exe":
-    #             return True
-    #     return False
-    #
-    # def check_is_edge_running(self):
-    #     for proc in psutil.process_iter(self.attrs):
-    #         if proc.name() == "msedge.exe":
-    #             return True
-    #     return False
-
