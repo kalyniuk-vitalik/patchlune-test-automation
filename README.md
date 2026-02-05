@@ -1,6 +1,6 @@
-# System Helper.exe Automation Testing Framework
+# Patchlune Windows Application - Automation Testing Framework
 
-A Python-based automation testing framework for System Helper.exe.  
+A Python-based automation testing framework for the Patchlune Windows desktop application.  
 This project uses **pytest** and **pywinauto** for UI automation, structured with the **Page Object Model (POM)** to ensure maintainability, scalability, and reliability.  
 Utility modules extend functionality with process management, log analysis, signature verification, and browser handling.
 
