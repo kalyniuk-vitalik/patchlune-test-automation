@@ -46,7 +46,7 @@ def test_click_privacy_policy(installer_window, browser_manager, lang_code):
 def test_start_installation (installer_window):
     """Checks that clicking the install button starts installation and displays the correct labels."""
     installer_window.click_install_button()
-    installing_driver_updater = installer_window.get_label(**InstallerLocators.INSTALLING_LABEL)
+    installing_patchlune= installer_window.get_label(**InstallerLocators.INSTALLING_LABEL)
     do_not_turn_your_device_off = installer_window.get_label(**InstallerLocators.DO_NOT_TURN_OFF_LABEL)
-    assert installing_driver_updater.window_text() == "Installing Driver Updater", f"{installing_driver_updater.window_text()}"
+    assert installing_patchlune.window_text() == "Installing", f"{installing_patchlune.window_text()}"
     assert do_not_turn_your_device_off.window_text() == "Please do not turn your device off", f"{do_not_turn_your_device_off.window_text()}"
