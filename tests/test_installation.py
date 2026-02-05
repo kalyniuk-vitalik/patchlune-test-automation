@@ -4,13 +4,13 @@ from conftest import exe_path
 from utils.process_utils import wait_for_process_start
 from utils.log_analyzer import verify_desktop_to_web_flow
 from utils.signature_verifier import get_signature
-from test_data.signatures import ADAWARE_SIGNATURE
+from test_data.signatures import NEUTRAL_SIGNATURE
 from test_data.expected_log_patterns import LICENSE_AGREEMENT_EXPECTATIONS, PRIVACY_POLICY_EXPECTATIONS
 import time
 
 def test_exe_signature(exe_path):
     """Verifies that the installer executable has the expected digital signature."""
-    assert get_signature(exe_path) == ADAWARE_SIGNATURE, "Signature verification failed!"
+    assert get_signature(exe_path) == NEUTRAL_SIGNATURE, "Signature verification failed!"
 
 def test_visible_installer_window(installer_window):
     """Checks that the installer window and all key UI elements are visible and have correct properties."""
