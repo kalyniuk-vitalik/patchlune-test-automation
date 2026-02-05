@@ -7,14 +7,18 @@ from utils.installer_start import start_installer
 @pytest.fixture(scope="session")
 def exe_path():
     """Provides the path to the installer executable."""
-    return r"C:\Users\VKalyniuk\Downloads\installer_10.1.63763.5338_signed_injected_internal.exe"
+    exe_path = os.getenv("INSTALLER_EXE_PATH", r"C:\installer.exe")
+    if not os.path.exists(exe_path):
+        pytest.fail(f"Installer executable not found: {exe_path}")
+    return exe_path
 
 @pytest.fixture
 def installer_app(exe_path):
     """Starts the installer application and ensures cleanup after tests."""
     application = start_installer(exe_path)
     yield application
-    time.sleep(5)
+    cleanup_delay = int(os.getenv("CLEANUP_DELAY", "5"))
+    time.sleep(cleanup_delay)
     if application:
          try:
              application.kill()
