@@ -5,7 +5,7 @@ def verify_desktop_to_web_flow(redirect, custom_value, lang_of_url):
 
     Useful for verifying that the correct redirect and custom parameters are logged during installation.
     """
-    path = Path(r"C:\ProgramData\Avanquest\Driver Updater\logs")
+    path = Path() # TODO: Placeholder path. Replace with dynamic Windows path resolution
     if not path.exists():
         raise FileNotFoundError(f"Log directory not found: {path}")
 
